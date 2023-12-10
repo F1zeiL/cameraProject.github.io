@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Document</title>
+    <script src="./ezuikit.js"></script>
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+<div id="languageSwitcher" style="position: absolute; top: 10px; right: 10px;">
+    <button onclick="toggleLanguage()">English</button>
+    <button data-en="Logout" data-cn="登出" onclick="logout()">Logout</button>
+</div>
+<div className="demo">
+    <h2>Video Window</h2>
+    <div id="video-container"></div>
+    <div>
+        <button data-en="Play" data-cn="播放" onclick="play()">Play</button>
+        <button data-en="Stop" data-cn="停止" onclick="stop()">Stop</button>
+        <button data-en="CapturePicture" data-cn="截屏" onclick="capturePicture()">CapturePicture</button>
+        <button data-en="OpenSound" data-cn="打开声音" onclick="openSound()">OpenSound</button>
+        <button data-en="CloseSound" data-cn="关闭声音" onclick="closeSound()">CloseSound</button>
+        <button data-en="StartSave" data-cn="开始录制" onclick="startSave()">StartSave</button>
+        <button data-en="StopSave" data-cn="停止录制" onclick="stopSave()">StopSave</button>
+        <button data-en="StartTalk" data-cn="开始对话" onclick="ezopenStartTalk()">StartTalk</button>
+        <button data-en="StopTalk" data-cn="停止对话" onclick="ezopenStopTalk())">StopTalk</button>
+        <button data-en="FullScreen" data-cn="全屏" onclick="fullScreen()">FullScreen</button>
+    </div>
+</div>
+<script>
+    var player;
+    fetch('https://open.ys7.com/jssdk/ezopen/demo/token')
+      .then(response => response.json())
+      .then(res => {
+        var accessToken = res.data.accessToken;
+
+        // 定义留白大小
+        var margin = 40; // 比如，每边留白20px
+        var marginPercentage = 10; // 假设留白为视口宽度和高度的5%
+
+        // 获取视口宽度和高度
+        var width = window.innerWidth * (1 - marginPercentage / 100) < window.innerWidth - margin * 2 ? window.innerWidth * (1 - marginPercentage / 100) : window.innerWidth - margin * 2;
+        var height = width * 9 / 16;
+
+        // 创建播放器实例
+        player = new EZUIKit.EZUIKitPlayer({
+          id: 'video-container',
+          accessToken: 'at.8v6gpkbm1i0kr3ygaa5d7judacttrgk5-26l4uyh1lh-0sic1bd-tvqtnrfoj',
+          url: 'ezopen://open.ys7.com/G61293437/1.hd.live',
+          template: 'simple',
+          plugin: ['talk'],
+          width: width,   // 设置为视口宽度
+          height: height, // 设置为视口高度
+        });
+      });
+
+    // 可选：监听窗口尺寸变化，动态调整播放器大小
+    window.addEventListener('resize', function() {
+        var margin = 40; // 留白大小
+        var marginPercentage = 10; // 留白比例
+        var newWidth = window.innerWidth * (1 - marginPercentage / 100) < window.innerWidth - margin * 2 ? window.innerWidth * (1 - marginPercentage / 100) : window.innerWidth - margin * 2;
+        var newHeight = newWidth * 9 / 16;
+
+        if (player) {
+            player.resize(newWidth, newHeight);
+        }
+    });
+    function fullScreen() {
+      var playPromise = player.fullScreen();
+      playPromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function play() {
+      var playPromise = player.play();
+      playPromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function stop() {
+      var stopPromise = player.stop();
+      stopPromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function capturePicture() {
+      var capturePicturePromise = player.capturePicture();
+      capturePicturePromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function openSound() {
+      var openSoundPromise = player.openSound();
+      openSoundPromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function closeSound() {
+      var closeSoundPromise = player.closeSound();
+      closeSoundPromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function startSave() {
+      var startSavePromise = player.startSave();
+      startSavePromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function stopSave() {
+      var stopSavePromise = player.stopSave();
+      stopSavePromise.then((data) => {
+        console.log("promise 获取 数据", data)
+      })
+    }
+    function ezopenStartTalk() {
+      player.startTalk();
+    }
+    function ezopenStopTalk() {
+      player.stopTalk();
+    }
+    function logout() {
+      // 跳转到 login.html
+      window.location.href = 'login.html';
+    }
+    function toggleLanguage() {
+      var isEnglish = document.querySelector("#languageSwitcher button").textContent === "English";
+      var buttons = document.querySelectorAll("button");
+
+      buttons.forEach(function(button) {
+        if (isEnglish) {
+          button.textContent = button.getAttribute('data-cn');
+        } else {
+          button.textContent = button.getAttribute('data-en');
+        }
+      });
+
+      document.querySelector("#languageSwitcher button").textContent = isEnglish ? "中文" : "English";
+    }
+</script>
+</body>
+
+</html>
